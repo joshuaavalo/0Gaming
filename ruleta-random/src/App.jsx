@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Ruleta from "./components/Ruleta";
-
 import Señalador from "./components/Señalador";
 import BotonGirar from "./components/BotonGirar";
 
@@ -20,7 +19,10 @@ function App() {
         },
       });
       const data = await respuesta.json();
+      console.log(`Número obtenido del backend: ${data.value}`);
+      console.log("Todo funciona correctamente!!!!");
       return data.value;
+      
     } catch (error) {
       console.error("Error al obtener el número:", error);
       return Math.floor(Math.random() * 100) + 1;
@@ -29,7 +31,7 @@ function App() {
 
   const girarRuleta = async () => {
     setGirando(true);
-    setResultado("");
+    setResultado(""); 
 
     const numeroAleatorio = await obtenerNumeroAleatorio();
     setNumeroFinal(numeroAleatorio);
@@ -72,13 +74,16 @@ function App() {
 
   return (
     <div className="ruleta-container">
-      
-      
       <Ruleta generarNumeros={generarNumeros} rotacionFinal={rotacionFinal} />
-      
       <Señalador />
-      <BotonGirar girando={girando} girarRuleta={girarRuleta} />
-      <div id="resultado">{resultado && `La ruleta se detuvo en: ${numeroFinal}`}</div>
+      <div className="ruleta-container2">
+        <BotonGirar girando={girando} girarRuleta={girarRuleta}></BotonGirar>
+        <div id="resultado">
+          {girando
+            ? "Esperando resultado..."
+            : `La ruleta se detuvo en: ${numeroFinal}`}
+        </div>
+      </div>
     </div>
   );
 }
